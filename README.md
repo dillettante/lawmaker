@@ -1,8 +1,18 @@
 # lawmaker
 
+> 한국 법령·행정규칙 입안·심사·정비 기준(법제처) 에이전트 스킬 · An agent skill for drafting, reviewing, and plain-language revision of Korean legislation and administrative rules, built from Ministry of Government Legislation (MOLEG) standards.
+
 한국 **법령·조례·규칙·행정규칙의 입안·심사·정비**를 돕는 에이전트 스킬(지식베이스). 법제처의 4대 실무기준을
-구조화 챕터 + 토픽 인덱스 + 의사결정 치트시트 + 법령안 출력 포매터로 정리했다. Claude Code·Copilot CLI·Amp 등
-`SKILL.md`(frontmatter) 규약을 따르는 에이전트에서 온디맨드로 로드된다.
+구조화 챕터 + 토픽 인덱스 + 의사결정 치트시트 + 법령안 출력 포매터로 정리했다.
+`SKILL.md`(frontmatter) 규약을 따르는 **모든 에이전트**에서 온디맨드로 로드된다(파일을 읽는 어떤 도구에서도 참조 가능; 설치 예시는 아래).
+
+## In English
+**lawmaker** is an agent skill (knowledge base) for **drafting, reviewing, and revising Korean statutes, subordinate legislation, and administrative rules**. It distills four official standards of the Korean **Ministry of Government Legislation (MOLEG, 법제처)** into 76 structured chapters + a topic index + a decision cheatsheet + a statute-format helper. It loads on demand in **any agent that follows the `SKILL.md` (frontmatter) convention**, and can be referenced by any file-reading tool.
+
+- **Sources** (derived summaries, not verbatim copies): Statute Drafting & Review Standards (2026), Legislative Affairs Handbook (2026), Plain-Language Statute Revision Standards (10th ed.), Administrative-Rule Drafting & Review Standards (2026).
+- **⚠ Disclaimer**: Unofficial study aid. Chapter summaries are **not** citation authority — verify against the original before citing, and check statute/precedent numbers against official databases. Not legal advice.
+- **Install**: `git clone https://github.com/dillettante/lawmaker.git`, then symlink it into your agent's skill root (e.g. `~/.claude/skills/` or `~/.agents/skills/`).
+- **License**: content CC BY 4.0 (credit 법제처/MOLEG), code MIT — see [LICENSE](LICENSE).
 
 ## 무엇을 담았나
 법제처 발간 기준을 파생·정리(원문 복사가 아닌 구조화 요약):
