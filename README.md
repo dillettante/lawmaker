@@ -53,7 +53,6 @@ ln -s "$PWD/lawmaker" ~/.claude/skills/lawmaker
 
 ## 업데이트
 원문이 새 판으로 개정되면 관리자가 재생성해 새 버전을 릴리스한다(실시간 자동갱신 아님). 절차: [build/BUILD.md](build/BUILD.md).
-개정 감지는 `.github/workflows/check-updates.yml`가 best-effort로 이슈를 생성한다.
 
 ## 라이선스
 - **문서·콘텐츠**(`SKILL.md`, `chapters/`, `*.md`): [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) —

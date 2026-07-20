@@ -7,7 +7,7 @@
 항이 하나뿐이면 항 마커(①)를 생략하고 본문을 바로 쓴다 (ch31).
 
 개정지시문 헬퍼는 ch32/ch33의 자구 일부개정문을 조립한다:
-  제○조제○항 중 "옛"을 "새"로 한다.
+  제○조제○항 중 「옛」을 「새」로 한다. (조사 을/를·로/으로 자동 선택)
 
 입력 예시 (구조화 dict):
     article = {
@@ -90,13 +90,27 @@ def _cite(article, paragraph=None, item=None):
     return s
 
 
+def _batchim(word):
+    """마지막 한글 음절의 종성 코드(0=없음). 한글이 아니면 None."""
+    ch = word[-1]
+    if "가" <= ch <= "힣":
+        return (ord(ch) - 0xAC00) % 28
+    return None
+
+
 def amend_directive(article, old, new, paragraph=None, item=None):
     """자구 일부개정문 한 줄 (ch32, ch33).
 
-    제○조제○항 중 "옛"을 "새"로 한다.
-    낫표 「 」로 자구를 감싼다 (ch32).
+    제○조제○항 중 「옛」을 「새」로 한다.
+    낫표 「 」로 자구를 감싼다(ch32·formatting.md). 조사는 인용 자구의
+    끝 글자를 따른다 — 받침 유무로 을/를, 받침(ㄹ 제외)으로 로/으로.
     """
-    return f'{_cite(article, paragraph, item)} 중 「{old}」을 「{new}」로 한다.'
+    b_old = _batchim(old)
+    eul = "을" if (b_old is None or b_old) else "를"
+    b_new = _batchim(new)
+    # 종성 8 = ㄹ: "…물로 한다"처럼 ㄹ 받침 뒤엔 '로'
+    ro = "으로" if (b_new is not None and b_new not in (0, 8)) else "로"
+    return f'{_cite(article, paragraph, item)} 중 「{old}」{eul} 「{new}」{ro} 한다.'
 
 
 if __name__ == "__main__":
@@ -137,6 +151,10 @@ if __name__ == "__main__":
 
     # 개정지시문 (ch32, ch33)
     d = amend_directive(5, "국토해양부장관", "국토교통부장관", paragraph=1)
-    assert d == "제5조제1항 중 「국토해양부장관」을 「국토교통부장관」로 한다.", d
+    assert d == "제5조제1항 중 「국토해양부장관」을 「국토교통부장관」으로 한다.", d
+    # 조사 자동 선택: 모음 끝→를, ㄹ받침→로
+    assert amend_directive(3, "허가", "인가") == '제3조 중 「허가」를 「인가」로 한다.'
+    assert amend_directive(3, "물", "물건") == '제3조 중 「물」을 「물건」으로 한다.'
+    assert amend_directive(3, "건물", "시설물") == '제3조 중 「건물」을 「시설물」로 한다.'
 
     print("self-check passed")
