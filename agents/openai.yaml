@@ -1,0 +1,4 @@
+interface:
+  display_name: "Lawmaker"
+  short_description: "한국 법령 입안·심사·정비를 위한 법제처 기준"
+  default_prompt: "$lawmaker를 사용해 이 법령안의 위임 범위, 조문 체계, 부칙과 문장 정비 기준을 검토해 줘."

@@ -11,7 +11,7 @@
 
 - **Sources** (derived summaries, not verbatim copies): Statute Drafting & Review Standards (2026), Legislative Affairs Handbook (2026), Plain-Language Statute Revision Standards (10th ed.), Administrative-Rule Drafting & Review Standards (2026).
 - **⚠ Disclaimer**: Unofficial study aid. Chapter summaries are **not** citation authority — verify against the original before citing, and check statute/precedent numbers against official databases. Not legal advice.
-- **Install**: `git clone https://github.com/dillettante/lawmaker.git`, then symlink it into your agent's skill root (e.g. `~/.claude/skills/` or `~/.agents/skills/`).
+- **Install**: Use a local agent skill root, or upload the standard skill ZIP to Claude.ai or ChatGPT Skills. See the Korean installation guide below.
 - **License**: content CC BY 4.0 (credit 법제처/MOLEG), code MIT — see [LICENSE](LICENSE).
 
 ## 무엇을 담았나
@@ -29,15 +29,56 @@
 확인한다. 법률 자문을 대체하지 않는다.
 
 ## 설치
-`SKILL.md` 규약을 따르는 에이전트의 스킬 루트에 이 저장소를 두면 된다.
+
+### 내 환경 고르기
+
+| 사용하는 제품 | 권장 경로 | 범위 |
+| --- | --- | --- |
+| Claude Code · Codex · Hermes 등 로컬 에이전트 | 아래의 심링크 설치 | 전체 지식베이스와 포매터 사용 |
+| Claude.ai | custom skill ZIP 업로드 | 전체 지식베이스 사용, 선택 도구 실행 여부는 Claude 환경에 따름 |
+| ChatGPT Skills | skill ZIP 업로드 | 지원 플랜·워크스페이스 권한 필요 |
+| Claude Project · ChatGPT 맞춤 GPT | 지침·관련 챕터를 직접 넣기 | 특정 쟁점의 대안 경로; 전체 스킬 설치와 같지 않음 |
+
+### Claude Code · Codex · Hermes 등 로컬 에이전트
+
+`SKILL.md` 규약을 따르는 에이전트의 스킬 루트에 이 저장소를 둔다.
+
 ```bash
 git clone https://github.com/dillettante/lawmaker.git
+cd lawmaker
 # Claude Code
-ln -s "$PWD/lawmaker" ~/.claude/skills/lawmaker
-# Copilot CLI / Amp 등 크로스에이전트
-# ln -s "$PWD/lawmaker" ~/.agents/skills/lawmaker
+mkdir -p ~/.claude/skills
+ln -s "$PWD" ~/.claude/skills/lawmaker
+# Codex·Copilot CLI·Amp 등 공통 경로를 쓰는 에이전트
+# mkdir -p ~/.agents/skills && ln -s "$PWD" ~/.agents/skills/lawmaker
 ```
 에이전트 재시작 후 "법령 입안", "위임조문", "경과조치 규정 방식", "'여부' 순화" 등으로 트리거된다.
+
+### Claude.ai (웹·데스크톱 대화형 Claude)
+
+`lawmaker/` 폴더 안에 `SKILL.md`가 있는 ZIP을 만들어 **Customize → Skills → Create skill → Upload a skill**에서 올린다. 개인 계정에서는 Settings의 Capabilities에서 Code execution and file creation을 먼저 켜야 할 수 있고, Team·Enterprise는 조직 관리자의 활성화가 필요할 수 있다. 업로드 뒤 Skills 목록에서 켠다. 자세한 조건은 [Claude 공식 안내](https://support.claude.com/en/articles/12512180-use-skills-in-claude)를 따른다.
+
+```bash
+git clone https://github.com/dillettante/lawmaker.git
+zip -r lawmaker.zip lawmaker -x '*/.git/*' '*/__pycache__/*'
+```
+
+### ChatGPT Skills (웹·모바일·데스크톱 대화형 ChatGPT)
+
+Skills 메뉴가 보이는 계정에서는 같은 ZIP을 **Plugins → Skills → Create → Upload**에서 올린다. 현재 Skills 지원 여부는 플랜과 워크스페이스 권한에 따라 다르며, Enterprise·Edu에서는 관리자가 Skills·업로드 권한을 켜야 할 수 있다. [ChatGPT 공식 안내](https://help.openai.com/en/articles/20001066)를 확인한다.
+
+### Skills 메뉴가 없을 때: 제한된 대안
+
+- **Claude Project:** Project instructions에 `SKILL.md`의 사용 원칙을 넣고, 다룰 쟁점의 `chapters/chNN-*.md`와 `formatting.md`만 Project knowledge에 추가한다.
+- **ChatGPT 맞춤 GPT:** Instructions에 `SKILL.md`의 핵심 원칙을 넣고, 해당 사건·입안 쟁점의 챕터만 Knowledge로 올린다. 76개 챕터 전체를 한꺼번에 올리는 경로로 안내하지 않는다.
+- **일반 채팅:** 아래 요청문과 필요한 챕터를 함께 제공한다. 어느 경로든 이 저장소는 비공식 판단 보조물이며, 외부 제출 전 법제처 원문과 현행 법령을 대조해야 한다.
+
+```text
+법제처 기준을 참고해 이 법령안을 검토해 줘. 해당 기준은 비공식 판단 보조물로만 쓰고,
+원문 근거와 현행 법령의 대조가 필요한 부분은 확인 필요로 표시해 줘.
+위임 한계, 조문 체계, 부칙·경과조치, 용어·문장 정비를 구분해 검토하되,
+사실이나 법령 근거를 추정해 보태지 마.
+```
 
 ## 사용
 - 토픽으로: "위임 한계", "입법예고 기간", "행정규칙 대외 구속력"
